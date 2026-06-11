@@ -1,0 +1,1061 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Phinehas | Portfolio</title>
+
+<!-- Meta tags -->
+<meta name="description" content="Phinehas Melese — Biomedical Engineering student building health tech and software.">
+<meta property="og:title" content="Phinehas Melese | Portfolio">
+<meta property="og:description" content="Biomedical Engineering student exploring systems, technology, and software development step by step.">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Phinehas Melese | Portfolio">
+<meta name="twitter:description" content="Biomedical Engineering student exploring systems, technology, and software development step by step.">
+
+<!-- Favicon -->
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%230a1020'/><text y='.9em' font-size='80' x='10'>P</text></svg>">
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap');
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:"Inter", sans-serif;
+    scroll-behavior:smooth;
+}
+
+/* PAGE LOADER */
+#loader{
+    position:fixed;
+    inset:0;
+    background:#0a1020;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    z-index:9999;
+    transition:opacity 0.6s ease, visibility 0.6s ease;
+}
+
+#loader.hide{
+    opacity:0;
+    visibility:hidden;
+}
+
+.loader-text{
+    font-size:1.6rem;
+    font-weight:600;
+    background:linear-gradient(90deg,#38bdf8,#8b5cf6);
+    -webkit-background-clip:text;
+    -webkit-text-fill-color:transparent;
+    animation:pulse 1s ease-in-out infinite;
+}
+
+@keyframes pulse{
+    0%,100%{opacity:1;}
+    50%{opacity:0.3;}
+}
+
+/* CURSOR GLOW */
+#cursor-glow{
+    position:fixed;
+    width:340px;
+    height:340px;
+    border-radius:50%;
+    background:radial-gradient(circle, rgba(56,189,248,0.07) 0%, transparent 70%);
+    pointer-events:none;
+    transform:translate(-50%,-50%);
+    transition:left 0.12s ease, top 0.12s ease;
+    z-index:0;
+}
+
+body{
+    background:#0a1020;
+    color:#e5e7eb;
+    transition:background 0.3s, color 0.3s;
+}
+
+body.light{
+    background:#f0f7ff;
+    color:#1e293b;
+}
+
+body::before{
+    content:"";
+    position:fixed;
+    width:100%;
+    height:100%;
+    background:radial-gradient(circle at 20% 20%, rgba(56,189,248,0.08), transparent 40%),
+               radial-gradient(circle at 80% 60%, rgba(139,92,246,0.08), transparent 40%);
+    z-index:-1;
+}
+
+body.light::before{
+    background:radial-gradient(circle at 20% 20%, rgba(56,189,248,0.05), transparent 40%),
+               radial-gradient(circle at 80% 60%, rgba(139,92,246,0.05), transparent 40%);
+}
+
+/* NAV */
+nav{
+    position:fixed;
+    width:100%;
+    top:0;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:15px 10%;
+    background:rgba(0,0,0,0.4);
+    backdrop-filter:blur(12px);
+    transition:0.3s;
+    z-index:1000;
+}
+
+body.light nav{
+    background:rgba(255,255,255,0.7);
+}
+
+nav.shrink{
+    padding:10px 10%;
+    background:rgba(0,0,0,0.6);
+}
+
+body.light nav.shrink{
+    background:rgba(255,255,255,0.85);
+}
+
+nav h2{
+    color:#38bdf8;
+}
+
+nav a{
+    margin-left:15px;
+    text-decoration:none;
+    color:#94a3b8;
+    position:relative;
+    transition:color 0.3s;
+}
+
+body.light nav a{
+    color:#64748b;
+}
+
+nav a.active{
+    color:#38bdf8;
+}
+
+nav a.active::after{
+    content:"";
+    position:absolute;
+    bottom:-6px;
+    left:0;
+    width:100%;
+    height:2px;
+    background:#38bdf8;
+}
+
+/* THEME TOGGLE */
+#theme-toggle{
+    background:none;
+    border:1px solid rgba(56,189,248,0.3);
+    color:#38bdf8;
+    padding:5px 12px;
+    border-radius:20px;
+    cursor:pointer;
+    font-size:13px;
+    margin-left:20px;
+    transition:0.3s;
+}
+
+#theme-toggle:hover{
+    background:rgba(56,189,248,0.1);
+}
+
+/* HERO */
+.hero{
+    height:100vh;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+    text-align:center;
+    padding:0 10%;
+    opacity:0;
+    transform:translateY(20px);
+    transition:1s;
+    position:relative;
+    z-index:1;
+}
+
+.hero.show{
+    opacity:1;
+    transform:translateY(0);
+}
+
+.hero h1{
+    font-size:3.3rem;
+    background:linear-gradient(90deg,#38bdf8,#8b5cf6);
+    -webkit-background-clip:text;
+    -webkit-text-fill-color:transparent;
+    animation:floatText 4s ease-in-out infinite;
+}
+
+@keyframes floatText{
+    0%,100%{transform:translateY(0);}
+    50%{transform:translateY(-6px);}
+}
+
+.hero-sub{
+    margin-top:12px;
+    font-size:1.1rem;
+    color:#94a3b8;
+    min-height:1.6em;
+}
+
+body.light .hero-sub{
+    color:#64748b;
+}
+
+.cursor-blink{
+    display:inline-block;
+    width:2px;
+    height:1.1em;
+    background:#38bdf8;
+    margin-left:2px;
+    vertical-align:middle;
+    animation:blink 0.8s step-end infinite;
+}
+
+@keyframes blink{
+    0%,100%{opacity:1;}
+    50%{opacity:0;}
+}
+
+.hero p.tagline{
+    margin-top:6px;
+    max-width:600px;
+    color:#64748b;
+    font-size:0.95rem;
+}
+
+/* BUTTONS */
+.btn{
+    padding:10px 16px;
+    margin-top:15px;
+    border-radius:8px;
+    text-decoration:none;
+    display:inline-block;
+    transition:0.3s;
+}
+
+.primary{
+    background:#38bdf8;
+    color:#0a1020;
+}
+
+.secondary{
+    border:1px solid #38bdf8;
+    color:#38bdf8;
+}
+
+.btn:hover{
+    transform:translateY(-2px);
+}
+
+/* SOCIAL LINKS */
+.social-links{
+    display:flex;
+    gap:14px;
+    margin-top:20px;
+    justify-content:center;
+    align-items:center;
+}
+
+.social-links a{
+    display:flex;
+    align-items:center;
+    gap:7px;
+    color:#64748b;
+    text-decoration:none;
+    font-size:14px;
+    transition:0.3s;
+}
+
+.social-links a:hover{
+    color:#38bdf8;
+}
+
+.social-links svg{
+    width:20px;
+    height:20px;
+    fill:currentColor;
+}
+
+/* SECTIONS */
+section{
+    padding:100px 10%;
+    opacity:0;
+    transform:translateY(20px);
+    transition:0.8s;
+    position:relative;
+    z-index:1;
+}
+
+section.show{
+    opacity:1;
+    transform:translateY(0);
+}
+
+h2{
+    color:#38bdf8;
+    margin-bottom:20px;
+}
+
+/* ABOUT */
+.about-text{
+    max-width:680px;
+    line-height:1.85;
+    color:#cbd5e1;
+    font-size:1.05rem;
+}
+
+body.light .about-text{
+    color:#334155;
+}
+
+.about-text p{
+    margin-bottom:14px;
+}
+
+.about-text strong{
+    color:#e2e8f0;
+}
+
+body.light .about-text strong{
+    color:#1e293b;
+}
+
+/* JOURNEY TIMELINE */
+.timeline{
+    position:relative;
+    padding-left:28px;
+    border-left:2px solid rgba(56,189,248,0.2);
+    display:flex;
+    flex-direction:column;
+    gap:36px;
+    max-width:620px;
+}
+
+.timeline-item{
+    position:relative;
+    opacity:0;
+    transform:translateX(-16px);
+    transition:opacity 0.5s ease, transform 0.5s ease;
+}
+
+.timeline-item.show{
+    opacity:1;
+    transform:translateX(0);
+}
+
+.timeline-item::before{
+    content:"";
+    position:absolute;
+    left:-35px;
+    top:6px;
+    width:12px;
+    height:12px;
+    border-radius:50%;
+    background:#38bdf8;
+    border:2px solid #0a1020;
+    box-shadow:0 0 0 3px rgba(56,189,248,0.2);
+}
+
+body.light .timeline-item::before{
+    border-color:#f0f7ff;
+}
+
+.timeline-item .year{
+    font-size:12px;
+    color:#38bdf8;
+    letter-spacing:0.08em;
+    text-transform:uppercase;
+    margin-bottom:4px;
+}
+
+.timeline-item h3{
+    font-size:1rem;
+    font-weight:600;
+    color:#e2e8f0;
+    margin-bottom:4px;
+}
+
+body.light .timeline-item h3{
+    color:#1e293b;
+}
+
+.timeline-item p{
+    font-size:14px;
+    color:#94a3b8;
+    line-height:1.6;
+}
+
+/* GRID */
+.grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+    gap:18px;
+}
+
+/* CARD */
+.card{
+    background:rgba(255,255,255,0.03);
+    padding:20px;
+    border-radius:14px;
+    border:1px solid rgba(255,255,255,0.06);
+    backdrop-filter:blur(12px);
+    transition:0.3s;
+    opacity:0;
+    transform:translateY(16px);
+}
+
+body.light .card{
+    background:rgba(255,255,255,0.7);
+    border-color:rgba(0,0,0,0.07);
+}
+
+.card.show{
+    opacity:1;
+    transform:translateY(0);
+}
+
+.card:hover{
+    transform:translateY(-10px);
+    border-color:#38bdf8;
+}
+
+/* PROJECT */
+.project h3{
+    margin-bottom:8px;
+}
+
+.project p{
+    color:#94a3b8;
+    font-size:14px;
+    line-height:1.6;
+}
+
+body.light .project p{
+    color:#64748b;
+}
+
+.tags{
+    margin-top:10px;
+}
+
+.tag{
+    display:inline-block;
+    padding:4px 8px;
+    margin-right:5px;
+    font-size:12px;
+    border-radius:6px;
+    background:#111a2e;
+    color:#38bdf8;
+}
+
+body.light .tag{
+    background:#e0f2fe;
+    color:#0369a1;
+}
+
+/* PROJECT LINKS */
+.project-links{
+    display:flex;
+    gap:10px;
+    margin-top:14px;
+}
+
+.project-links a{
+    font-size:12px;
+    text-decoration:none;
+    color:#38bdf8;
+    border:1px solid rgba(56,189,248,0.3);
+    padding:4px 10px;
+    border-radius:6px;
+    transition:0.3s;
+}
+
+.project-links a:hover{
+    background:rgba(56,189,248,0.1);
+}
+
+/* BLOG */
+.blog-card{
+    display:flex;
+    flex-direction:column;
+    gap:8px;
+}
+
+.blog-meta{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    margin-bottom:4px;
+}
+
+.blog-tag{
+    font-size:11px;
+    padding:3px 9px;
+    border-radius:20px;
+    background:#111a2e;
+    color:#38bdf8;
+    font-weight:500;
+}
+
+body.light .blog-tag{
+    background:#e0f2fe;
+    color:#0369a1;
+}
+
+.blog-date{
+    font-size:11px;
+    color:#64748b;
+}
+
+.blog-card h3{
+    font-size:0.95rem;
+    font-weight:600;
+    color:#e2e8f0;
+    line-height:1.5;
+    margin-bottom:4px;
+}
+
+body.light .blog-card h3{
+    color:#1e293b;
+}
+
+.blog-card p{
+    font-size:13px;
+    color:#94a3b8;
+    line-height:1.6;
+    flex:1;
+}
+
+body.light .blog-card p{
+    color:#64748b;
+}
+
+.blog-read{
+    margin-top:10px;
+    font-size:13px;
+    color:#38bdf8;
+    text-decoration:none;
+    transition:0.2s;
+    align-self:flex-start;
+}
+
+.blog-read:hover{
+    color:#7dd3fc;
+}
+
+/* SKILLS */
+.bar{
+    height:6px;
+    background:#1e293b;
+    border-radius:10px;
+    overflow:hidden;
+    margin-top:5px;
+    margin-bottom:12px;
+}
+
+body.light .bar{
+    background:#e2e8f0;
+}
+
+.bar span{
+    display:block;
+    height:100%;
+    width:0;
+    background:linear-gradient(90deg,#38bdf8,#8b5cf6);
+    transition:width 1s ease;
+}
+
+/* CONTACT */
+#contact-form input,
+#contact-form textarea{
+    width:100%;
+    padding:10px;
+    margin-top:10px;
+    background:#111a2e;
+    border:1px solid rgba(255,255,255,0.06);
+    color:white;
+    border-radius:8px;
+    font-size:14px;
+    transition:border-color 0.3s;
+}
+
+body.light #contact-form input,
+body.light #contact-form textarea{
+    background:#fff;
+    border-color:rgba(0,0,0,0.1);
+    color:#1e293b;
+}
+
+#contact-form input:focus,
+#contact-form textarea:focus{
+    outline:none;
+    border-color:#38bdf8;
+}
+
+#contact-form button{
+    margin-top:14px;
+    padding:10px 22px;
+    background:#38bdf8;
+    color:#0a1020;
+    font-weight:600;
+    font-size:14px;
+    border:none;
+    border-radius:8px;
+    cursor:pointer;
+    transition:0.3s;
+}
+
+#contact-form button:hover{
+    background:#7dd3fc;
+    transform:translateY(-1px);
+}
+
+#contact-form button:disabled{
+    opacity:0.6;
+    cursor:not-allowed;
+    transform:none;
+}
+
+#form-status{
+    margin-top:12px;
+    font-size:14px;
+    display:none;
+}
+
+/* FOOTER */
+footer{
+    text-align:center;
+    padding:30px;
+    color:#64748b;
+    position:relative;
+    z-index:1;
+}
+
+.footer-social{
+    display:flex;
+    justify-content:center;
+    gap:20px;
+    margin-bottom:14px;
+}
+
+.footer-social a{
+    display:flex;
+    align-items:center;
+    gap:6px;
+    color:#64748b;
+    text-decoration:none;
+    font-size:13px;
+    transition:0.3s;
+}
+
+.footer-social a:hover{
+    color:#38bdf8;
+}
+
+.footer-social svg{
+    width:18px;
+    height:18px;
+    fill:currentColor;
+}
+
+/* MOBILE */
+@media(max-width:768px){
+    nav{
+        flex-direction:column;
+        gap:10px;
+        text-align:center;
+    }
+
+    .hero h1{
+        font-size:2.2rem;
+    }
+
+    section{
+        padding:80px 6%;
+    }
+
+    .timeline{
+        padding-left:20px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<!-- Page loader -->
+<div id="loader"><div class="loader-text">Phinehas.</div></div>
+
+<!-- Cursor glow -->
+<div id="cursor-glow"></div>
+
+<nav>
+    <h2>Phinehas</h2>
+    <div style="display:flex;align-items:center;flex-wrap:wrap;">
+        <a href="#about">About</a>
+        <a href="#skills">Skills</a>
+        <a href="#journey">Journey</a>
+        <a href="#projects">Projects</a>
+        <a href="#contact">Contact</a>
+        <a href="#blog">Blog</a>
+        <button id="theme-toggle">☀ Light</button>
+    </div>
+</nav>
+
+<div class="hero">
+    <h1>Phinehas Melese</h1>
+    <div class="hero-sub">
+        <span id="typed-text"></span><span class="cursor-blink"></span>
+    </div>
+    <p class="tagline">Biomedical Engineering student building at the intersection of health and technology.</p>
+
+    <div>
+        <a class="btn primary" href="#projects">View Projects</a>
+        <a class="btn secondary" href="#contact">Contact</a>
+    </div>
+
+    <div class="social-links">
+        <a href="https://github.com/phinyman-rgb" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61-.546-1.385-1.335-1.755-1.335-1.755-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg>
+            GitHub
+        </a>
+        <a href="https://t.me/fentropic" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg>
+            Telegram
+        </a>
+    </div>
+</div>
+
+<section id="about">
+    <h2>About Me</h2>
+    <div class="about-text">
+        <p>
+            I'm a <strong>2nd-year Biomedical Engineering student</strong> with a growing passion for software development.
+            I started coding this year and have been building consistently ever since — learning HTML, CSS, and JavaScript
+            from scratch while juggling a full engineering curriculum.
+        </p>
+        <p>
+            What drives me is the intersection of the two fields. Biomedical Engineering teaches me how the human body works
+            as a system; software gives me the tools to build things that interact with it. My goal is to work on
+            <strong>health tech and medical software</strong> — products that make a real difference in how people are
+            diagnosed, monitored, and treated.
+        </p>
+        <p>
+            I'm still early in this journey, but I show up every day, build things, and keep improving.
+        </p>
+    </div>
+</section>
+
+<section id="skills">
+    <h2>Skills</h2>
+
+    <p>HTML</p>
+    <div class="bar"><span data="90%"></span></div>
+
+    <p>CSS</p>
+    <div class="bar"><span data="80%"></span></div>
+
+    <p>JavaScript</p>
+    <div class="bar"><span data="60%"></span></div>
+</section>
+
+<section id="journey">
+    <h2>Journey</h2>
+    <div class="timeline">
+
+        <div class="timeline-item">
+            <div class="year">2024</div>
+            <h3>Joined university</h3>
+            <p>Enrolled at university, diving into the fundamentals of biology, physics, and engineering systems.</p>
+        </div>
+
+        <div class="timeline-item">
+            <div class="year">2025</div>
+            <h3>Started Biomedical Engineering</h3>
+            <p>Started learning to code — HTML, CSS, and JavaScript. Realised I wanted to build things, not just study them.</p>
+        </div>
+
+        <div class="timeline-item">
+            <div class="year">2026</div>
+            <h3>Built first project: this portfolio</h3>
+            <p>Designed and developed a fully responsive personal portfolio from scratch. First real thing I've shipped.</p>
+        </div>
+
+        <div class="timeline-item">
+            <div class="year">Next</div>
+            <h3>Health tech & beyond</h3>
+            <p>Working toward building software at the intersection of engineering and medicine. More projects coming.</p>
+        </div>
+
+    </div>
+</section>
+
+<section id="projects">
+    <h2>Projects</h2>
+    <div class="grid">
+
+        <div class="card project">
+            <h3>Portfolio Website</h3>
+            <p>Responsive personal portfolio built using HTML, CSS, JS.</p>
+            <div class="tags">
+                <span class="tag">HTML</span>
+                <span class="tag">CSS</span>
+                <span class="tag">JS</span>
+            </div>
+            <div class="project-links">
+                <a href="https://your-live-url.com" target="_blank" rel="noopener">Live →</a>
+                <a href="https://github.com/phinyman-rgb" target="_blank" rel="noopener">Code →</a>
+            </div>
+        </div>
+
+        <div class="card project">
+            <h3>Study Tracker (Idea)</h3>
+            <p>Future productivity app to track study sessions.</p>
+            <div class="tags">
+                <span class="tag">Idea</span>
+                <span class="tag">Productivity</span>
+            </div>
+        </div>
+
+        <div class="card project">
+            <h3>More Coming Soon</h3>
+            <p>Real projects will be added as I grow.</p>
+            <div class="tags">
+                <span class="tag">WIP</span>
+            </div>
+        </div>
+
+    </div>
+</section>
+
+<section id="contact">
+    <h2>Contact</h2>
+    <form id="contact-form">
+        <input name="name" type="text" placeholder="Name" required />
+        <input name="email" type="email" placeholder="Email" required />
+        <textarea name="message" rows="4" placeholder="Message" required></textarea>
+        <button type="submit" id="submit-btn">Send</button>
+        <p id="form-status"></p>
+    </form>
+</section>
+
+<section id="blog">
+    <h2>Blog</h2>
+    <p style="color:#94a3b8; margin-bottom:28px; font-size:14px;">Thoughts on health tech, biomedical engineering, and the journey of learning to build.</p>
+    <div class="grid">
+
+        <div class="card blog-card">
+            <div class="blog-meta">
+                <span class="blog-tag">Health Tech</span>
+                <span class="blog-date">Coming soon</span>
+            </div>
+            <h3>Why software will reshape how we diagnose disease</h3>
+            <p>From AI-assisted imaging to wearable biosensors — how the line between engineer and doctor is blurring, and why that excites me.</p>
+            <a class="blog-read" href="#">Read more →</a>
+        </div>
+
+        <div class="card blog-card">
+            <div class="blog-meta">
+                <span class="blog-tag">Dev Learnings</span>
+                <span class="blog-date">Coming soon</span>
+            </div>
+            <h3>What I learned building my first project from scratch</h3>
+            <p>No tutorial, no template — just me, the docs, and a lot of trial and error. Here's what actually stuck.</p>
+            <a class="blog-read" href="#">Read more →</a>
+        </div>
+
+        <div class="card blog-card">
+            <div class="blog-meta">
+                <span class="blog-tag">More coming</span>
+                <span class="blog-date">—</span>
+            </div>
+            <h3>More posts on the way</h3>
+            <p>I'll be writing regularly about what I'm learning, building, and thinking about. Stay tuned.</p>
+        </div>
+
+    </div>
+</section>
+
+<footer>
+    <div class="footer-social">
+        <a href="https://github.com/phinyman-rgb" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61-.546-1.385-1.335-1.755-1.335-1.755-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg>
+            phinyman-rgb
+        </a>
+        <a href="https://t.me/fentropic" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.277-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg>
+            @fentropic
+        </a>
+    </div>
+    <p>© 2026 Phinehas</p>
+</footer>
+
+<script>
+// PAGE LOADER
+window.addEventListener("load", () => {
+    setTimeout(() => {
+        document.getElementById("loader").classList.add("hide");
+    }, 900);
+});
+
+// CURSOR GLOW
+const glow = document.getElementById("cursor-glow");
+document.addEventListener("mousemove", e => {
+    glow.style.left = e.clientX + "px";
+    glow.style.top = e.clientY + "px";
+});
+
+// TYPING ANIMATION
+const phrases = [
+    "Biomedical Engineering student.",
+    "Aspiring health tech builder.",
+    "Learning to code, one project at a time.",
+    "Exploring where medicine meets software."
+];
+let phraseIndex = 0;
+let charIndex = 0;
+let deleting = false;
+const typedEl = document.getElementById("typed-text");
+
+function type() {
+    const current = phrases[phraseIndex];
+    if (!deleting) {
+        typedEl.textContent = current.slice(0, charIndex + 1);
+        charIndex++;
+        if (charIndex === current.length) {
+            deleting = true;
+            setTimeout(type, 1800);
+            return;
+        }
+    } else {
+        typedEl.textContent = current.slice(0, charIndex - 1);
+        charIndex--;
+        if (charIndex === 0) {
+            deleting = false;
+            phraseIndex = (phraseIndex + 1) % phrases.length;
+        }
+    }
+    setTimeout(type, deleting ? 40 : 65);
+}
+setTimeout(type, 1200);
+
+// DARK / LIGHT TOGGLE
+const toggleBtn = document.getElementById("theme-toggle");
+toggleBtn.addEventListener("click", () => {
+    document.body.classList.toggle("light");
+    toggleBtn.textContent = document.body.classList.contains("light") ? "🌙 Dark" : "☀ Light";
+});
+
+// CONTACT FORM
+const form = document.getElementById('contact-form');
+form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const btn = document.getElementById('submit-btn');
+    const status = document.getElementById('form-status');
+    btn.textContent = 'Sending...';
+    btn.disabled = true;
+    status.style.display = 'none';
+    try {
+        const res = await fetch('https://formspree.io/f/mnjybqnw', {
+            method: 'POST',
+            headers: { 'Accept': 'application/json' },
+            body: new FormData(form)
+        });
+        if (res.ok) {
+            status.textContent = '✓ Message sent! I\'ll get back to you soon.';
+            status.style.color = '#38bdf8';
+            form.reset();
+        } else {
+            status.textContent = '✗ Something went wrong. Please try again.';
+            status.style.color = '#f87171';
+        }
+    } catch (err) {
+        status.textContent = '✗ Network error. Check your connection and try again.';
+        status.style.color = '#f87171';
+    }
+    status.style.display = 'block';
+    btn.textContent = 'Send';
+    btn.disabled = false;
+});
+
+// SCROLL REVEAL — sections
+const sectionObserver = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+        if (e.isIntersecting) e.target.classList.add("show");
+    });
+});
+document.querySelectorAll("section, .hero").forEach(el => sectionObserver.observe(el));
+
+// STAGGERED CARDS
+const cardObserver = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+        if (e.isIntersecting) {
+            const cards = e.target.querySelectorAll(".card");
+            cards.forEach((card, i) => {
+                setTimeout(() => card.classList.add("show"), i * 120);
+            });
+        }
+    });
+}, { threshold: 0.1 });
+document.querySelectorAll(".grid").forEach(grid => cardObserver.observe(grid));
+
+// STAGGERED TIMELINE
+const timelineObserver = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+        if (e.isIntersecting) {
+            const items = e.target.querySelectorAll(".timeline-item");
+            items.forEach((item, i) => {
+                setTimeout(() => item.classList.add("show"), i * 150);
+            });
+        }
+    });
+}, { threshold: 0.1 });
+document.querySelectorAll(".timeline").forEach(t => timelineObserver.observe(t));
+
+// SKILLS ANIMATION
+window.addEventListener("scroll", () => {
+    document.querySelectorAll(".bar span").forEach(bar => {
+        if (bar.getBoundingClientRect().top < window.innerHeight) {
+            bar.style.width = bar.getAttribute("data");
+        }
+    });
+});
+
+// NAVBAR ACTIVE + SHRINK
+const nav = document.querySelector("nav");
+const links = document.querySelectorAll("nav a");
+const sections = document.querySelectorAll("section");
+
+window.addEventListener("scroll", () => {
+    const scrollPos = window.scrollY + window.innerHeight / 3;
+    nav.classList.toggle("shrink", window.scrollY > 50);
+    sections.forEach(section => {
+        if (scrollPos >= section.offsetTop && scrollPos < section.offsetTop + section.offsetHeight) {
+            links.forEach(link => {
+                link.classList.remove("active");
+                if (link.getAttribute("href") === "#" + section.id) link.classList.add("active");
+            });
+        }
+    });
+});
+</script>
+
+</body>
+</html>
